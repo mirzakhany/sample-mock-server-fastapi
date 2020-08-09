@@ -91,6 +91,7 @@ def get_task(task_uuid):
     for task in tasks:
         if task["id"] == task_uuid:
             return task
+    return None
 
 
 def add_task(task_data):

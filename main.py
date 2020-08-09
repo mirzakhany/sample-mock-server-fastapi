@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, HTTPException
 from data import create_mock_data, tasks, get_task, update_task, add_task, remove_task, check_user
 
 
@@ -41,7 +42,12 @@ def get_tasks():
 
 @app.get("/tasks/{task_uuid}")
 def get_task_item(task_uuid: str):
-    return get_task(task_uuid)
+
+    task_item = get_task(task_uuid)
+    if task_item is not None:
+        return task_item
+    else:
+        raise HTTPException(status_code=404, detail="task not found")
 
 
 @app.post("/tasks")
